@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@php
+$user = Auth::user();
+@endphp
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -14,7 +18,12 @@
                         </div>
                     @endif
 
-                    {{ __('You are logged in!') }}
+                    {{ $user->name }} has
+                    @if ($user->savefile != null)
+                        a savefile
+                    @else
+                        no savefile
+                    @endif
                 </div>
             </div>
         </div>
