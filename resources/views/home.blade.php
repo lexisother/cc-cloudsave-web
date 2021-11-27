@@ -18,6 +18,10 @@ $user = Auth::user();
                         </div>
                     @endif
 
+                    <div>
+                        Your API key: <code>{{ $user->api_token }}</code>
+                    </div>
+
                     {{ $user->name }} has
                     @if ($user->savefile != null)
                         a savefile
