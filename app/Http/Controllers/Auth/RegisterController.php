@@ -7,6 +7,7 @@ use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
@@ -69,5 +70,11 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+    }
+
+    protected function registered(Request $request, $user) {
+        $user->generateToken();
+
+        return response()->json(['data' => $user->toArray()], 201);
     }
 }
