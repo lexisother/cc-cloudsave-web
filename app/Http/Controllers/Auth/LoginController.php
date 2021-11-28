@@ -47,25 +47,33 @@ class LoginController extends Controller
             $user = $this->guard()->user();
             $user->generateToken();
 
-            return $request->wantsJson()
-                ? response()->json([
-                'data' => $user->toArray(),
-                ])
-                : redirect()->intended('/');
+            if (str_contains($request->fullUrl(), 'api')) {
+                return response()->json(['data' => $user->toArray()], 200);
+            } else {
+                return redirect()->intended('/');
+            }
         }
     }
 
     public function logout(Request $request) {
-        $this->validateLogin($request);
+        if (str_contains($request->fullUrl(), 'api')) {
+            $user = Auth::guard('api')->user();
 
-        if ($this->attemptLogin($request)) {
-            $user = $request->user();
-            $user->api_token = null;
-            $user->save();
+            if ($user) {
+                $user->api_token = null;
+                $user->save();
+            }
 
-            return $request->wantsJson()
-                ? response()->json(['data' => 'User logged out.'], 200)
-                : redirect()->intended('/');
+            return response()->json(['data' => 'User logged out.'], 200);
+        } else {
+            // NOTE: I have no idea how to access the user object from here.
+            // The API key is thus NOT regenerated!!!
+            $this->guard()->logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+
+            return redirect()->intended('/');
         }
     }
 }
