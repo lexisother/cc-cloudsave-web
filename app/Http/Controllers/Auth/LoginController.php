@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 
@@ -50,6 +51,20 @@ class LoginController extends Controller
                 ? response()->json([
                 'data' => $user->toArray(),
                 ])
+                : redirect()->intended('/');
+        }
+    }
+
+    public function logout(Request $request) {
+        $this->validateLogin($request);
+
+        if ($this->attemptLogin($request)) {
+            $user = $request->user();
+            $user->api_token = null;
+            $user->save();
+
+            return $request->wantsJson()
+                ? response()->json(['data' => 'User logged out.'], 200)
                 : redirect()->intended('/');
         }
     }
