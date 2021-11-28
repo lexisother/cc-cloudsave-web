@@ -1,3 +1,73 @@
+# cc-cloudsave-web
+
+A web API/UI for managing your CrossCode cloud save.
+
+## API Documentation
+
+### `POST @ /api/register`
+
+This route is used for registering a new user.
+
+To register via the API, `POST` the following data to the endpoint:
+
+```json
+{
+    "name": "Your Name",
+    "email": "youremail@example.com",
+    "password": "your-super-secure-password",
+    "password_confirmation": "your-super-secure-password"
+}
+```
+
+### `POST @ /api/login`
+
+This route is used for logging into your account. It allows you to fetch your API token programmatically.
+
+To login via the API, `POST` the following data to the endpoint:
+
+```json
+{
+    "email": "youremail@example.com",
+    "password": "your-super-secure-password"
+}
+```
+
+### `POST @ /api/logout`
+
+This route is used for logging out of your account. It sets your API token to `null`.
+
+To logout via the API, `POST` the following data to the endpoint:
+
+```json
+{
+    "api_token": "your-api-token"
+}
+```
+
+### `GET @ /api/user`
+
+This route is used for getting your user data using your API token.
+
+To fetch your user data, make a `GET` request with the following data:
+
+```json
+{
+    "api_token": "your-api-token"
+}
+```
+
+### `POST @ /api/user`
+
+This route is used for uploading your save file using your API token.
+
+```json
+{
+    "savefile": "your-UNENCODED-savefile",
+    "api_token": "your-api-token"
+}
+```
+
+<!-- I'm preserving this for reasons. Maybe I'll add some info from it later.
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
 <p align="center">
@@ -64,3 +134,4 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+-->
